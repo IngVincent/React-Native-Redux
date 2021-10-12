@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Title, Card, Button } from 'react-native-paper';
 import {MaterialIcons, Entypo} from '@expo/vector-icons';
 
-const Profile = ()=>{
+const Profile = (props)=>{
 
-
+    const {id,name,picture,phone,salary,email,position} = props.route.params.item
     const openDial=()=>
     {
         if(Platform.OS=== "android")
@@ -26,15 +26,15 @@ const Profile = ()=>{
            <View style={{alignItems:"center"}}>
                <Image
                style={{width:100,height:100, borderRadius:140/2, marginTop:-50}}
-               source={{uri:"https://images.unsplash.com/photo-1513258496099-48168024aec0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c3R1ZGVudHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"}}
+               source={{uri:picture}}
                />
            </View>
             <View style={{alignItems:'center', margin:15}}>
                 <Title>
-                  Vicente
+                  {name}
                </Title>
                <Text style={{fontSize:15}}> 
-                   Web developer
+                  {position}
                 </Text>
             </View>
             <Card style={styles.mycard} onPress={()=>{
@@ -42,17 +42,17 @@ const Profile = ()=>{
             }}>
                 <View style={styles.cardContent}>
                     <MaterialIcons name="email" size={32} color="#006aff"/>
-                    <Text style={styles.mytext}>abc@abc.com </Text>
+                    <Text style={styles.mytext}>{email} </Text>
                 </View>
             </Card>
             <Card style={styles.mycard} onPress={()=>openDial()}>
                 <View style={styles.cardContent}>
                     <MaterialIcons name="phone" size={32} color="#006aff"/>
-                    <Text style={styles.mytext}>1234567890 </Text>
+                    <Text style={styles.mytext}>{phone} </Text>
                 </View>
                 <View style={styles.cardContent}>
                     <MaterialIcons name="attach-money" size={32} color="#006aff"/>
-                    <Text style={styles.mytext}>8 MXN </Text>
+                    <Text style={styles.mytext}>{salary} </Text>
                 </View>
             </Card>
             <View style={{flexDirection:"row", justifyContent:"space-around", padding:10}}>

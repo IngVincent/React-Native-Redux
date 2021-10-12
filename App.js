@@ -9,18 +9,34 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const stack = createStackNavigator();
+const myOptions ={ title:"My Sweet Home",
+headerTintColor:"white",
+headerStyle: {
+  backgroundColor:"#006aff"
+  }
+}
 
 function App() {
   return (
     <View style={styles.container}>
         <stack.Navigator>
-          <stack.Screen name="Home" component={Home} />
-          <stack.Screen name="create" component={CreateEmployee} />
-          <stack.Screen name="Profile" component={Profile} />
+          <stack.Screen 
+          name="Home" 
+          component={Home} 
+          options={myOptions}
+           />
+          <stack.Screen 
+            name="Create" 
+            component={CreateEmployee} 
+            options={{...myOptions, title:"Create Employee"}}
+            />
+          <stack.Screen 
+            name="Profile" 
+            component={Profile}
+            options={{...myOptions, title:"Profile"}}
+
+            />
         </stack.Navigator>
-     {/* <Home /> */}
-     {/* <CreateEmployee />*/} 
-     
       <StatusBar style="auto" />
     </View>
   );

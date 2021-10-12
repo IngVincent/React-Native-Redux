@@ -38,7 +38,7 @@ const  Home=(props)=>{
                 renderItem={({item})=>{
                     return renderList(item)
                 }}
-                keyExtractor = {item=>item.id}
+                keyExtractor = {item=>item.id.toString()}
            
            
            />

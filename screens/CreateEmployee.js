@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View  } from 'react-native';
-import {TextInput, Button, Modal, Provider } from 'react-native-paper';
-
+import {TextInput, Button, Modal, Alert } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 const CreateEmployee = ()=>{
     const [Name,setName] = useState("")
@@ -11,6 +12,36 @@ const CreateEmployee = ()=>{
     const [picture,setPicture] = useState("")
     const [modal, setModal] = useState(false)
   
+    const pickFromGallery = async ()=>{
+        const {granted} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        if(granted){
+                await ImagePicker.launchImageLibraryAsync({
+                mediaTypes:ImagePicker.MediaTypeOptions.Images,
+                allowsEditing:true,
+                aspect:[1,1],
+                quality:0.5
+            })
+            console.log(data)
+        }
+        else{
+            alert("You nedd to give permission to work");
+        }
+    }
+    const pickFromCamera = async ()=>{
+        const {granted} = await Permissions.askAsync(Permissions.CAMERA)
+        if(granted){
+            let data= await ImagePicker.launchCameraAsync({
+                mediaTypes:ImagePicker.MediaTypeOptions.Images,
+                allowsEditing:true,
+                aspect:[1,1],
+                quality:0.5
+            })
+            console.log(data)
+        }
+        else{
+            alert("You nedd to give permission to work")
+        }
+    }
 
     return(
         <View style={styles.root}>
@@ -28,7 +59,7 @@ const CreateEmployee = ()=>{
                 value={email}
                 theme={theme}
                 mode="outlined"
-                onChangeText={text =>this.setEmail(text)}
+                onChangeText={text => setEmail(text)}
             />
                 <TextInput 
                 label='phone'
@@ -37,7 +68,7 @@ const CreateEmployee = ()=>{
                 theme={theme}
                 keyboardType="number-pad"
                 mode="outlined"
-                onChangeText={text =>this.setPhone(text)}
+                onChangeText={text =>setPhone(text)}
             />
                <TextInput 
                 label='salary'
@@ -45,7 +76,7 @@ const CreateEmployee = ()=>{
                 value={salary}
                 theme={theme}
                 mode="outlined"
-                onChangeText={text =>this.setSalary(text)}
+                onChangeText={text =>setSalary(text)}
             />         
   <Button  
     style={styles.inputStyle} 
@@ -73,13 +104,13 @@ const CreateEmployee = ()=>{
            <View style= {styles.modalButtonView}>
                <Button icon="camera" 
                 mode="contained" 
-                onPress={() => console.log("presses")}>
+                onPress={() => pickFromCamera()}>
                    Camera
                 </Button>
                <Button icon="image-area" 
                mode="contained" 
                theme={theme}
-                onPress={() => setModal(false)}>
+                onPress={() => pickFromGallery()}>
                    gallery
                 </Button>            
             </View>

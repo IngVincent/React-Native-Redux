@@ -4,6 +4,7 @@ import {TextInput, Button, Modal, Alert } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+
 const CreateEmployee = ()=>{
     const [Name,setName] = useState("")
     const [phone,setPhone] = useState("")
@@ -21,7 +22,14 @@ const CreateEmployee = ()=>{
                 aspect:[1,1],
                 quality:0.5
             })
-            console.log(data)
+            if(!data.cancelled){
+                let newfile = { 
+                  uri:data.uri,
+                  type:`test/${data.uri.split(".")[1]}`,
+                  name:`test.${data.uri.split(".")[1]}`
+                  }
+              handleUpload(newfile) 
+             }
         }
         else{
             alert("You nedd to give permission to work");
@@ -36,13 +44,33 @@ const CreateEmployee = ()=>{
                 aspect:[1,1],
                 quality:0.5
             })
-            console.log(data)
+           if(!data.cancelled){
+              let newfile = { 
+                uri:data.uri,
+                type:`test/${data.uri.split(".")[1]}`,
+                name:`test.${data.uri.split(".")[1]}`
+                }
+            handleUpload(newfile) 
+           }
         }
         else{
             alert("You nedd to give permission to work")
         }
     }
+    const handleUpload = (Image)=>{
+        const data = new FormData()
+        data.append('file',Image)
+        data.append('upload_preset', 'employeeApp')
+        data.append('cloud_name','dzlsldhsu')
 
+        fetch("https://api.cloudinary.com/v1_1/dzlsldhsu/image/upload",{
+            method:"post",
+            body:data
+        }).then(res=>res.json())
+        then(data=>{
+            console.log(data)
+        })
+    }
     return(
         <View style={styles.root}>
             <TextInput 
@@ -104,13 +132,13 @@ const CreateEmployee = ()=>{
            <View style= {styles.modalButtonView}>
                <Button icon="camera" 
                 mode="contained" 
-                onPress={() => pickFromCamera()}>
+                onPress={() => pickFromCamera()&console.log("open camera")}>
                    Camera
                 </Button>
                <Button icon="image-area" 
                mode="contained" 
                theme={theme}
-                onPress={() => pickFromGallery()}>
+                onPress={() => pickFromGallery()& console.log("open gallery")}>
                    gallery
                 </Button>            
             </View>
